@@ -217,6 +217,7 @@ void ForwardPass<T>::IterateInternal(
         c_out,
         v);
     layer_norm3.RunPartial(stream1, batch_size, c_out, act_c_norm);
+    layer_norm3.RunPartial(stream1, batch_size, c_out, c_out);
     if (zoneout_prob && zoneout_mask) {
       ComputeCellOutput<T, true, true><<<gridDim, blockDim, 0, stream1>>>(
           batch_size,
@@ -249,6 +250,7 @@ void ForwardPass<T>::IterateInternal(
         c_out,
         v);
     layer_norm3.RunPartial(stream1, batch_size, c_out, act_c_norm);
+    layer_norm3.RunPartial(stream1, batch_size, c_out, c_out);
     if (zoneout_prob && zoneout_mask) {
       ComputeCellOutput<T, false, true><<<gridDim, blockDim, 0, stream1>>>(
           batch_size,

@@ -57,8 +57,9 @@ def LayerNormLSTMScript(
     g = torch.tanh(g)
     f = torch.sigmoid(f)
     o = torch.sigmoid(o)
-    c.append(f * c[t] + i * g)
-    h.append(o * torch.tanh(F.layer_norm(c[-1], (hidden_size,), weight=gamma_h, bias=beta_h)))
+    c_new = F.layer_norm(f * c[t] + i * g, (hidden_size,), weight=gamma_h, bias=beta_h)
+    c.append(c_new)
+    h.append(o * torch.tanh(c_new))
     if zoneout_prob:
       if training:
         h[-1] = (h[-1] - h[-2]) * zoneout_mask[t] + h[-2]

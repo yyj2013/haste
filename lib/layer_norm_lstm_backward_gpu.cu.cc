@@ -179,7 +179,7 @@ void BackwardPass<T>::IterateInternal(
     const T* c,       // [N,H]
     const T* c_new,   // [N,H]
     const T* dh_new,  // [N,H]
-    const T* dc_new,  // [N,H]
+    T* dc_new,  // [N,H]
     T* db,            // [H*4]
     T* dh,            // [N,H]
     T* dc,            // [N,H]
@@ -226,7 +226,7 @@ void BackwardPass<T>::IterateInternal(
         nullptr);
   }
   layer_norm3.RunPartial(stream1, batch_size, act_c_norm, act_c_norm);
-  layer_norm3.RunPartial(stream1, batch_size, static_cast<float*>(dc_new), static_cast<float*>(dc_new));
+  layer_norm3.RunPartial(stream1, batch_size, dc_new, dc_new);
   PointwiseOperations<T><<<gridDim, blockDim, 0, stream1>>>(
       batch_size,
       hidden_size,

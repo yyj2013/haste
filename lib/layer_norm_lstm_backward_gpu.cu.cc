@@ -263,7 +263,7 @@ void BackwardPass<T>::Run(
     const T* h,       // [T+1,N,H]
     const T* c,       // [T+1,N,H]
     const T* dh_new,  // [T+1,N,H]
-    const T* dc_new,  // [T+1,N,H]
+    T* dc_new,  // [T+1,N,H]
     T* dx,            // [T,N,C]
     T* dW,            // [C,H*4]
     T* dR,            // [H,H*4]
